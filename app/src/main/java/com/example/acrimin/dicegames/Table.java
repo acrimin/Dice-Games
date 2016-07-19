@@ -1,4 +1,4 @@
-package com.example.acrimin.dicegames.Model;
+package com.example.acrimin.dicegames;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,7 +18,7 @@ import java.util.Random;
  * Created by acrimin on 7/14/2016.
  */
 public class Table {
-    private ArrayList<Integer> dice;
+    private ArrayList<Dice> dice;
     private ArrayList<LinearLayout> diceRows;
     private LinearLayout linearLayoutTable;
     private Context context;
@@ -47,7 +47,7 @@ public class Table {
 
     private void addDice(int count) {
         for (int i = 0; i < count; i++) {
-            dice.add(random());
+            dice.add(new Dice(context));
         }
 
         setTable();
@@ -62,7 +62,7 @@ public class Table {
         editor.putInt("diceCount", dice.size());
 
         for (int i = 0; i < dice.size(); i++) {
-            editor.putInt("dice" + i, dice.get(i));
+            editor.putInt("dice" + i, dice.get(i).getSide());
         }
         editor.commit();
     }
@@ -75,7 +75,7 @@ public class Table {
 
         for (int i = 0; i < diceCount; i++) {
             int d = sharedPreferences.getInt("dice" + i, -1);
-            dice.add(d);
+            dice.add(new Dice(context, d));
         }
 
         setTable();
@@ -109,21 +109,9 @@ public class Table {
             diceRow.setLayoutParams(layoutParams);
             diceRow.setGravity(Gravity.CENTER);
 
-            dicePerRow = dice.size() - d;   // dice left
-            dicePerRow = (int) Math.ceil((float) dicePerRow / (rows - r));
+            dicePerRow = (int) Math.ceil((float) (dice.size() - d) / (rows - r));
             for (int i = 0; i < dicePerRow; i++) {
-                ImageView imageView = new ImageView(context);
-                FrameLayout.LayoutParams layoutParams1 = new FrameLayout.LayoutParams(
-                        getPixels(80),
-                        getPixels(80),
-                        1
-                );
-                imageView.setLayoutParams(layoutParams1);
-                imageView.setPadding(
-                        getPixels(5), getPixels(5), getPixels(5), getPixels(5)
-                );
-                imageView.setImageResource(getDrawable(dice.get(d)));
-                diceRow.addView(imageView);
+                diceRow.addView(dice.get(d).getImageView());
                 d++;
             }
             linearLayoutTable.addView(diceRow);
@@ -131,34 +119,9 @@ public class Table {
         diceRows.clear();
     }
 
-    private int getDrawable(int side) {
-        if (side == 1)
-            return R.drawable.one;
-        else if (side == 2)
-            return R.drawable.two;
-        else if (side == 3)
-            return R.drawable.three;
-        else if (side == 4)
-            return R.drawable.four;
-        else if (side == 5)
-            return R.drawable.five;
-        else
-            return R.drawable.six;
-    }
-
     public void roll() {
-        mRoll();
-    }
-
-    private void mRoll() {
         for (int i = 0; i < dice.size(); i++) {
-            dice.set(i, random());
+            dice.get(i).roll();
         }
-        setTable();
     }
-
-    private Integer random() {
-        return random.nextInt(6) + 1;
-    }
-
 }
