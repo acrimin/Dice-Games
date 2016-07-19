@@ -19,9 +19,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="110dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/black_wood">
+        android:background="@drawable/black_wood"
+        android:id="@+id/relativeLayout">
 
         <Button
             android:layout_width="80dp"
@@ -40,7 +41,8 @@
             android:id="@+id/button3"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:lines="2" />
     </RelativeLayout>
 
 </RelativeLayout>
