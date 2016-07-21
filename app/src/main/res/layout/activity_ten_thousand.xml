@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/LinearLayoutTable">
+        android:id="@+id/diceTable">
 
     </LinearLayout>
 
@@ -24,25 +24,82 @@
         android:background="@drawable/black_wood"
         android:id="@+id/relativeLayout">
 
-        <Button
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:text="Roll"
-            android:id="@+id/button2"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:onClick="rollPress" />
+            android:id="@+id/buttonLayout">
 
-        <Button
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:text="End Turn"
-            android:id="@+id/button3"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:lines="2" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Roll"
+                android:id="@+id/button2"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:onClick="rollPress"
+                android:layout_weight="1"
+                android:padding="0dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Send"
+                android:id="@+id/button4"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:onClick="sendPress"
+                android:layout_weight="1"
+                android:padding="0dp" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End Turn"
+                android:id="@+id/button3"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:lines="2"
+                android:onClick="endTurnPress"
+                android:layout_weight="1"
+                android:padding="0dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/sentTable"
+            android:layout_above="@+id/buttonLayout">
+
+        </LinearLayout>
     </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="150"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@android:color/white"
+        android:padding="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10000"
+        android:id="@+id/textView2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textColor="@android:color/white"
+        android:padding="5dp" />
 
 </RelativeLayout>

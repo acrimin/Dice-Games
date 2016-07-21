@@ -1,10 +1,13 @@
 package com.example.acrimin.dicegames;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.util.Random;
 
@@ -17,41 +20,40 @@ public class Dice {
     private float scale;
     private Random random;
     private boolean select;
+    private Context context;
 
-    public Dice(Context context) {
+    private static final String[] diceName = {
+            "one",
+            "two",
+            "three",
+            "four",
+            "five",
+            "six"};
+
+
+    /* init with set side and possible nonselection */
+    public Dice(Context context, int side, boolean sent) {
         random = new Random();
+
+        this.context = context;
         this.scale = context.getResources().getDisplayMetrics().density;
         this.select = false;
+        this.side = side;
 
-        imageView = new ImageView(context);
-        FrameLayout.LayoutParams layoutParams1 = new FrameLayout.LayoutParams(
-                getPixels(80),
-                getPixels(80),
-                1
-        );
-        imageView.setLayoutParams(layoutParams1);
-        imageView.setPadding(
-                getPixels(5), getPixels(5), getPixels(5), getPixels(5)
-        );
-        roll();
-        imageView.setImageResource(getDrawable());
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                select = !select;
-                imageView.setImageResource(getDrawable());
-            }
-        });
+        if (sent)
+            setSentDice();
+        else
+            setTableDice();
     }
 
+    /* init with set side and selection */
     public Dice(Context context, int side) {
-        this(context);
-        this.side = side - 1;
-        imageView.setImageResource(getDrawable());
+        this(context, side, false);
     }
 
-    public int getSide() {
-        return side + 1;
+    /* Default init with selection */
+    public Dice(Context context) {
+        this(context, new Random().nextInt(6), false);
     }
 
     public ImageView getImageView() {
@@ -60,40 +62,67 @@ public class Dice {
 
     public void roll() {
         side = random.nextInt(6);
+        updateDrawable();
+    }
+
+    public int getSide() {
+        return side;
+    }
+
+    public boolean isSelect() {
+        return select;
+    }
+
+    private void setTableDice() {
+        float scale = context.getResources().getDisplayMetrics().density;
+
+        imageView = new ImageView(context);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                getPixels(80),
+                getPixels(80),
+                1
+        );
+        imageView.setLayoutParams(layoutParams);
+        imageView.setPadding(5, 5, 5, 5);
         imageView.setImageResource(getDrawable());
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                select = !select;
+                updateDrawable();
+            }
+        });
+    }
+
+    public void setSentDice() {
+        select = false;
+        imageView = new ImageView(context);
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+        );
+
+        imageView.setLayoutParams(layoutParams);
+        imageView.setPadding(5, 5, 5, 5);
+        imageView.setImageResource(getDrawable());
+    }
+
+    private void updateDrawable() {
+        imageView.setImageResource(getDrawable());
+    }
+
+    private int getDrawable() {
+        String name = diceName[side];
+        if (select)
+            name += "_select";
+
+        return context.getResources().getIdentifier(name, "drawable", context.getPackageName());
     }
 
     private int getPixels(int dp) {
         return (int) (dp * scale + 0.5f);
-    }
-
-    private int getDrawable() {
-        if (select) {
-            if (side == 0)
-                return R.drawable.one_select;
-            else if (side == 1)
-                return R.drawable.two_select;
-            else if (side == 2)
-                return R.drawable.three_select;
-            else if (side == 3)
-                return R.drawable.four_select;
-            else if (side == 4)
-                return R.drawable.five_select;
-            else
-                return R.drawable.six_select;
-        } else {
-            if (side == 0)
-                return R.drawable.one;
-            else if (side == 1)
-                return R.drawable.two;
-            else if (side == 2)
-                return R.drawable.three;
-            else if (side == 3)
-                return R.drawable.four;
-            else if (side == 4)
-                return R.drawable.five;
-            else
-                return R.drawable.six;
-        }
     }
 }
